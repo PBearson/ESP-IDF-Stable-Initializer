@@ -8,7 +8,7 @@
 ESP_DIR="$HOME/esp"
 
 # Install deps
-sudo apt-get --assume-yes install gcc git wget make libncurses-dev flex bison gperf python python-pip python-setuptools python-serial python-cryptography python-future aria2
+sudo apt-get --assume-yes install gcc git wget make libncurses-dev flex bison gperf python python-pip python-setuptools python-serial python-cryptography python-future esptool aria2
 
 # Download toolchain
 mkdir -p $ESP_DIR
