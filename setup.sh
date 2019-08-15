@@ -8,7 +8,7 @@
 ESP_DIR="$HOME/esp"
 
 # Install deps
-sudo apt-get --assume-yes install gcc git wget make libncurses-dev flex bison gperf python python-pip python-setuptools python-serial python-cryptography python-future esptool aria2
+sudo apt-get --assume-yes install gcc git wget make libncurses-dev flex bison gperf python python-pip python-setuptools python-serial python-cryptography python-future aria2
 
 # Download toolchain
 mkdir -p $ESP_DIR
@@ -22,7 +22,6 @@ if grep -q "export ESP_DIR=" $HOME/.profile; then
 	echo "ESP_DIR already defined"
 else
 	echo "export ESP_DIR=$(echo $ESP_DIR)" >> $HOME/.profile
-	export PATH="$ESP_DIR/xtensa-esp32-elf/bin:$PATH"
 fi
 if grep -q "export PATH=\"\$ESP_DIR/xtensa-esp32-elf/bin" $HOME/.profile; then
 	echo "PATH already defined"
@@ -38,8 +37,35 @@ if grep -q "export IDF_PATH=" $HOME/.profile; then
 	echo "IDF_PATH already defined"
 else
 	echo 'export IDF_PATH="$ESP_DIR/esp-idf"' >> $HOME/.profile
-	export IDF_PATH="$ESP_DIR/esp-idf"
 fi
 
 # Install python deps
 python -m pip install --user -r $IDF_PATH/requirements.txt
+
+# Setup path to esptool
+if grep -q "alias esptool" $HOME/.profile; then
+	echo "esptool alias already defined"
+else
+	echo 'alias esptool="python $IDF_PATH/components/esptool_py/esptool/esptool.py"' >> $HOME/.profile
+fi
+
+
+# Setup path to espsecure
+if grep -q "alias espsecure" $HOME/.profile; then
+	echo "espsecure alias already defined"
+else
+	echo 'alias espsecure="python $IDF_PATH/components/esptool_py/esptool/espsecure.py"' >> $HOME/.profile
+fi
+
+# Setup path to espefuse
+if grep -q "alias espefuse" $HOME/.profile; then
+	echo "espefuse alias already defined"
+else
+	echo 'alias espefuse="python $IDF_PATH/components/esptool_py/esptool/espefuse.py"' >> $HOME/.profile
+fi
+
+# Set environment variables
+source $HOME/.profile
+
+# Exit script
+exit
