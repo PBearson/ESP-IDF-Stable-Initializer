@@ -18,17 +18,28 @@ tar -xvf xtensa-esp32-elf-linux64-1.22.0-80-g6c4433a-5.2.0.tar.gz
 rm xtensa-esp32-elf-linux64-1.22.0-80-g6c4433a-5.2.0.tar.gz
 
 # Setup path to toolchain
-echo "export ESP_DIR=$(echo $ESP_DIR)" >> $HOME/.profile
-export PATH="$ESP_DIR/xtensa-esp32-elf/bin:$PATH"
-echo 'export PATH="$ESP_DIR/xtensa-esp32-elf/bin:$PATH"' >> $HOME/.profile
+if grep -q "export ESP_DIR=" $HOME/.profile; then
+	echo "ESP_DIR already defined"
+else
+	echo "export ESP_DIR=$(echo $ESP_DIR)" >> $HOME/.profile
+	export PATH="$ESP_DIR/xtensa-esp32-elf/bin:$PATH"
+fi
+if grep -q "export PATH=\"\$ESP_DIR/xtensa-esp32-elf/bin" $HOME/.profile; then
+	echo "PATH already defined"
+else
+	echo 'export PATH="$ESP_DIR/xtensa-esp32-elf/bin:$PATH"' >> $HOME/.profile
+fi
 
 # Get ESP-IDF
 git clone -b v3.2.2 --recursive https://github.com/espressif/esp-idf.git
 
 # Setup path to ESP-IDF
-export IDF_PATH="$ESP_DIR/esp-idf"
-echo 'export IDF_PATH="$ESP_DIR/esp-idf"' >> $HOME/.profile
+if grep -q "export IDF_PATH=" $HOME/.profile; then
+	echo "IDF_PATH already defined"
+else
+	echo 'export IDF_PATH="$ESP_DIR/esp-idf"' >> $HOME/.profile
+	export IDF_PATH="$ESP_DIR/esp-idf"
+fi
 
 # Install python deps
 python -m pip install --user -r $IDF_PATH/requirements.txt
-
