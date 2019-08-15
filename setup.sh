@@ -1,8 +1,8 @@
 #!/bin/bash
 
 # This script will setup the most stable release of ESP-IDF
-# The environment is installed in the ~/esp directory.
-# Environment variables are set using scripts in the /etc/profile.d/ directory.
+# The environment is installed in the ~/esp directory (by default).
+# Environment variables are set in the ~/.profile directory.
 
 # Change this to manually set the install location
 ESP_DIR="$HOME/esp"
@@ -18,17 +18,16 @@ tar -xvf xtensa-esp32-elf-linux64-1.22.0-80-g6c4433a-5.2.0.tar.gz
 rm xtensa-esp32-elf-linux64-1.22.0-80-g6c4433a-5.2.0.tar.gz
 
 # Setup path to toolchain
+echo "export ESP_DIR=$(echo $ESP_DIR)" >> $HOME/.profile
 export PATH="$ESP_DIR/xtensa-esp32-elf/bin:$PATH"
-echo 'export PATH="$ESP_DIR/xtensa-esp32-elf/bin:$PATH"' | sudo tee /etc/profile.d/setup_xtensa_path.sh
-bash /etc/profile.d/setup_xtensa_path.sh
+echo 'export PATH="$ESP_DIR/xtensa-esp32-elf/bin:$PATH"' >> $HOME/.profile
 
 # Get ESP-IDF
 git clone -b v3.2.2 --recursive https://github.com/espressif/esp-idf.git
 
 # Setup path to ESP-IDF
 export IDF_PATH="$ESP_DIR/esp-idf"
-echo 'export IDF_PATH="$ESP_DIR/esp-idf"' | sudo tee /etc/profile.d/setup_idf_path.sh
-bash /etc/profile.d/setup_idf_path.sh
+echo 'export IDF_PATH="$ESP_DIR/esp-idf"' >> $HOME/.profile
 
 # Install python deps
 python -m pip install --user -r $IDF_PATH/requirements.txt
