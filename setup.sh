@@ -8,7 +8,7 @@
 ESP_DIR="$HOME/esp"
 
 # Install deps
-sudo apt-get --assume-yes install gcc git wget make libncurses-dev flex bison gperf python python-pip python-setuptools python-serial python-cryptography python-future aria2
+sudo apt-get --assume-yes install gcc git wget make libncurses-dev flex bison gperf python3 python3-pip python3-setuptools python3-serial python3-cryptography python3-future aria2
 
 # Download toolchain
 mkdir -p $ESP_DIR
@@ -30,7 +30,7 @@ else
 fi
 
 # Get ESP-IDF
-git clone -b v3.2.2 --recursive https://github.com/espressif/esp-idf.git
+git clone -b v3.2.2 --recursive git@github.com:PBearson/esp-idf.git
 
 # Setup path to ESP-IDF
 if grep -q "export IDF_PATH=" $HOME/.profile; then
@@ -40,7 +40,7 @@ else
 fi
 
 # Install python deps
-python -m pip install --user -r $IDF_PATH/requirements.txt
+python3 -m pip install -r $IDF_PATH/requirements.txt
 
 # Setup path to esptool
 if grep -q "alias esptool" $HOME/.profile; then
